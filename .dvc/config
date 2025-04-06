@@ -1,4 +1,4 @@
 [core]
     remote = myremote
 ['remote "myremote"']
-    url = C:\Users\mohdm\Desktop\yt-data>
+    url = C:\\Users\\mohdm\\Desktop\\yt-data
