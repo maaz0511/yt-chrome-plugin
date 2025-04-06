@@ -8,9 +8,10 @@ import mlflow.sklearn
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.feature_extraction.text import TfidfVectorizer
 import os
-import dagshub
 import matplotlib.pyplot as plt
 import seaborn as sns
+import dagshub
+import json
 
 # logging configuration
 logger = logging.getLogger('model_evaluation')
@@ -108,16 +109,31 @@ def log_confusion_matrix(cm, dataset_name):
     mlflow.log_artifact(cm_file_path)
     plt.close()
 
+def save_model_info(run_id: str, model_path: str, file_path: str) -> None:
+    """Save the model run ID and path to a JSON file."""
+    try:
+        # Create a dictionary with the info you want to save
+        model_info = {
+            'run_id': run_id,
+            'model_path': model_path
+        }
+        # Save the dictionary as a JSON file
+        with open(file_path, 'w') as file:
+            json.dump(model_info, file, indent=4)
+        logger.debug('Model info saved to %s', file_path)
+    except Exception as e:
+        logger.error('Error occurred while saving the model info: %s', e)
+        raise
+
 
 def main():
     mlflow.set_tracking_uri("https://dagshub.com/maaz0511/yt-chrome-plugin.mlflow")
     
     dagshub.init(repo_owner='maaz0511', repo_name='yt-chrome-plugin', mlflow=True)
 
-
     mlflow.set_experiment('dvc-pipeline-runs')
     
-    with mlflow.start_run():
+    with mlflow.start_run() as run:
         try:
             # Load parameters from YAML file
             root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
@@ -138,6 +154,13 @@ def main():
 
             # Log model and vectorizer
             mlflow.sklearn.log_model(model, "lgbm_model")
+
+            artifact_uri = mlflow.get_artifact_uri()
+            model_path = f"{artifact_uri}/lgbm_model"
+
+            # Save model info
+            save_model_info(run.info.run_id, model_path, 'experiment_info.json')
+
             mlflow.log_artifact(os.path.join(root_dir, 'tfidf_vectorizer.pkl'))
 
             # Load test data
