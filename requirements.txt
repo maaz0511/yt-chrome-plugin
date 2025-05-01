@@ -4,3 +4,4 @@ requests==2.32.3
 certifi==2024.8.30
 websockets==13.0.1
 python-dotenv==1.0.1
+gunicorn==23.0.0
