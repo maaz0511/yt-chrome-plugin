@@ -1,5 +1,6 @@
 [core]
     remote = myremote
-['remote "myremote"']
+
+[remote "myremote"]
     url = s3://youtubecommentdvcbucket
     region = us-east-1
