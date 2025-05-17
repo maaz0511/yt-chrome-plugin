@@ -8,6 +8,7 @@ import io
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 import mlflow
+import os
 import numpy as np
 import joblib
 import re
@@ -52,9 +53,19 @@ def preprocess_comment(comment):
 # Load the model and vectorizer from the model registry and local storage
 def load_model_and_vectorizer(model_name, model_version, vectorizer_path):
     # Set MLflow tracking URI to your server
-    mlflow.set_tracking_uri("https://dagshub.com/maaz0511/yt-chrome-plugin.mlflow")
-    
-    dagshub.init(repo_owner='maaz0511', repo_name='yt-chrome-plugin', mlflow=True)
+    dagshub_token =os.getenv("DAGSHUB_PAT")
+    if not dagshub_token:
+        raise EnvironmentError("DAGSHUB_PAT env variable is not set")
+        
+    os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
+    os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
+
+    dagshub_url = "https://dagshub.com"
+    repo_owner = "maaz0511"
+    repo_name = "yt-chrome-plugin"
+
+    mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}.mlflow")
+
 
     client = MlflowClient()
     model_uri = f"models:/{model_name}/{model_version}"
