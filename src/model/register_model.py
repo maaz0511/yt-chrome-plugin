@@ -5,8 +5,18 @@ import mlflow
 import logging
 import os
 
-# Set up MLflow tracking URI
-mlflow.set_tracking_uri("http://ec2-184-72-185-175.compute-1.amazonaws.com:5000/")
+dagshub_token =os.getenv("DAGSHUB_PAT")
+if not dagshub_token:
+    raise EnvironmentError("DAGSHUB_PAT env variable is not set")
+    
+os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
+os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
+
+dagshub_url = "https://dagshub.com"
+repo_owner = "maaz0511"
+repo_name = "yt-chrome-plugin"
+
+mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}.mlflow")
 
 
 # logging configuration
