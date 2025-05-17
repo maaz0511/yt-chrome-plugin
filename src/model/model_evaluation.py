@@ -142,7 +142,6 @@ def main():
 
     mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}.mlflow")
     
-    dagshub.init(repo_owner='maaz0511', repo_name='yt-chrome-plugin', mlflow=True)
 
     mlflow.set_experiment('dvc-pipeline-runs')
     
