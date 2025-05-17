@@ -10,6 +10,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import os
 import matplotlib.pyplot as plt
 import seaborn as sns
+import dagshub
 import json
 
 # logging configuration
@@ -127,6 +128,8 @@ def save_model_info(run_id: str, model_path: str, file_path: str) -> None:
 
 def main():
     mlflow.set_tracking_uri("https://dagshub.com/maaz0511/yt-chrome-plugin.mlflow")
+    
+    dagshub.init(repo_owner='maaz0511', repo_name='yt-chrome-plugin', mlflow=True)
 
     mlflow.set_experiment('dvc-pipeline-runs')
     
@@ -152,6 +155,7 @@ def main():
             # Log model and vectorizer
             mlflow.sklearn.log_model(model, "lgbm_model")
 
+            artifact_uri = mlflow.get_artifact_uri()
             model_path = "lgbm_model"
 
             # Save model info
