@@ -42,7 +42,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: us-east-1  # Replace with your AWS region
         run: |
-          dvc push
+          dvc push -v
 
       - name: Configure Git
         run: |
