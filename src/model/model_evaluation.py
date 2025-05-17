@@ -14,8 +14,6 @@ import dagshub
 import json
 
 
-
-
 # logging configuration
 logger = logging.getLogger('model_evaluation')
 logger.setLevel('DEBUG')
@@ -130,9 +128,7 @@ def save_model_info(run_id: str, model_path: str, file_path: str) -> None:
 
 
 def main():
-    
-    os.environ['DAGSHUB_USER'] = 'maaz0511'
-    os.environ['DAGSHUB_TOKEN'] = '465061f20306cf2e6ada8dc982b5034b0eb8dff3'
+    mlflow.set_tracking_uri("http://ec2-184-72-185-175.compute-1.amazonaws.com:5000/")
     
     dagshub.init(repo_owner='maaz0511', repo_name='yt-chrome-plugin', mlflow=True)
 

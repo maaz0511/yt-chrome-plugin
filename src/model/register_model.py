@@ -6,7 +6,7 @@ import logging
 import os
 
 # Set up MLflow tracking URI
-mlflow.set_tracking_uri("https://dagshub.com/maaz0511/yt-chrome-plugin.mlflow")
+mlflow.set_tracking_uri("http://ec2-184-72-185-175.compute-1.amazonaws.com:5000/")
 
 
 # logging configuration
