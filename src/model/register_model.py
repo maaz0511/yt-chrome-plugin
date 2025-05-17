@@ -3,12 +3,10 @@
 import json
 import mlflow
 import logging
-import dagshub
 import os
 
 # Set up MLflow tracking URI
 mlflow.set_tracking_uri("https://dagshub.com/maaz0511/yt-chrome-plugin.mlflow")
-dagshub.init(repo_owner='maaz0511', repo_name='yt-chrome-plugin', mlflow=True)
 
 
 # logging configuration
