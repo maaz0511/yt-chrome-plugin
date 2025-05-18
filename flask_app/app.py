@@ -73,6 +73,10 @@ def load_model_and_vectorizer(model_name, model_version, vectorizer_path):
     vectorizer = joblib.load(vectorizer_path)  # Load the vectorizer
     return model, vectorizer
 
+@app.route('/')
+def home():
+    return "Welcome to the flask api"
+
 # Initialize the model and vectorizer
 model, vectorizer = load_model_and_vectorizer("yt_chrome_plugin_model", "3", "./tfidf_vectorizer.pkl")
 
