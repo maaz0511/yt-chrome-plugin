@@ -159,25 +159,36 @@ def generate_chart():
         colors = ['#36A2EB', '#C9CBCF', '#FF6384']  # Blue, Gray, Red
 
         # Generate the pie chart
-        plt.figure(figsize=(6, 6))
-        plt.pie(
+        plt.figure(figsize=(7, 7))
+        wedges, texts, autotexts = plt.pie(
             sizes,
             labels=labels,
             colors=colors,
             autopct='%1.1f%%',
             startangle=140,
-            textprops={'color': 'w'}
+            textprops={'color': 'white', 'fontsize': 12},
+            wedgeprops={'edgecolor': 'black', 'linewidth': 1}
         )
+
+        # Bold labels
+        for text in texts:
+            text.set_fontweight('bold')
+
+        # Optional: Donut look
+        centre_circle = plt.Circle((0, 0), 0.50, fc='white')
+        plt.gca().add_artist(centre_circle)
+
         plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
         # Save the chart to a BytesIO object
         img_io = io.BytesIO()
-        plt.savefig(img_io, format='PNG', transparent=True)
+        plt.savefig(img_io, format='PNG', bbox_inches='tight', transparent=True)
         img_io.seek(0)
         plt.close()
 
         # Return the image as a response
         return send_file(img_io, mimetype='image/png')
+
     except Exception as e:
         app.logger.error(f"Error in /generate_chart: {e}")
         return jsonify({"error": f"Chart generation failed: {str(e)}"}), 500
